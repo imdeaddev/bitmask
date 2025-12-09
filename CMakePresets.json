@@ -1,0 +1,70 @@
+{
+    "version": 10,
+    "configurePresets": [
+        {
+            "name": "configure-preset-base",
+            "hidden": true,
+            "binaryDir": "${sourceDir}/build",
+            "generator": "Ninja",
+            "installDir": "${sourceDir}/build",
+            "toolchainFile": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
+            "cacheVariables": {
+                "CMAKE_EXPORT_COMPILE_COMMANDS": true
+            }
+        },
+        {
+            "name": "configure-preset-debug",
+            "displayName": "Debug",
+            "inherits": "configure-preset-base",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug"
+            }
+        },
+        {
+            "name": "configure-preset-release",
+            "displayName": "Release",
+            "inherits": "configure-preset-base",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release"
+            }
+        },
+        {
+            "name": "configure-preset-release-with-debug-info",
+            "displayName": "RelWithDebInfo",
+            "inherits": "configure-preset-base",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "RelWithDebInfo"
+            }
+        },
+        {
+            "name": "configure-preset-release-min-size",
+            "displayName": "MinSizeRel",
+            "inherits": "configure-preset-base",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "MinSizeRel"
+            }
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "build-preset-debug",
+            "configurePreset": "configure-preset-debug",
+            "displayName": "Debug"
+        },
+        {
+            "name": "build-preset-release",
+            "configurePreset": "configure-preset-release",
+            "displayName": "Release"
+        },
+        {
+            "name": "build-preset-release-with-debug-info",
+            "configurePreset": "configure-preset-release-with-debug-info",
+            "displayName": "RelWithDebInfo"
+        },
+        {
+            "name": "build-preset-release-min-size",
+            "configurePreset": "configure-preset-release-min-size",
+            "displayName": "MinSizeRel"
+        }
+    ]
+}

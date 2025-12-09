@@ -1,0 +1,10 @@
+*
+!include/
+!include/**
+!.clang-format 
+!.gitignore 
+!CMakeLists.txt 
+!CMakePresets.json 
+!LICENSE 
+!README.md
+!vcpkg.json

@@ -1,0 +1,45 @@
+cmake_minimum_required(VERSION 3.20..3.30)
+project("DeadDev Bitmask" LANGUAGES CXX VERSION 1.0.0)
+
+set(CMAKE_CXX_STANDARD 14)
+
+message(STATUS "${CMAKE_PROJECT_NAME} v${CMAKE_PROJECT_VERSION}")
+
+if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_CURRENT_SOURCE_DIR})
+    set(DEADDEV_BITMASK_IS_TOP_LEVEL_PROJECT TRUE)
+else(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_CURRENT_SOURCE_DIR})
+    set(DEADDEV_BITMASK_IS_TOP_LEVEL_PROJECT FALSE)
+endif(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_CURRENT_SOURCE_DIR})
+
+
+option(DEADDEV_BITMASK_BUILD_EXAMPLES "build examples" ${DEADDEV_BITMASK_IS_TOP_LEVEL_PROJECT})
+option(DEADDEV_BITMASK_BUILD_TESTS "build tests" ${DEADDEV_BITMASK_IS_TOP_LEVEL_PROJECT})
+option(DEADDEV_BITMASK_GENERATE_DOCS "generate documentation using Doxygen" ${DEADDEV_BITMASK_IS_TOP_LEVEL_PROJECT})
+option(DEADDEV_BITMASK_INSTALL "install library" ON)
+
+add_library(deaddevbitmask INTERFACE)
+target_include_directories(
+    deaddevbitmask INTERFACE 
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>
+)
+add_library(deaddev::bitmask ALIAS deaddevbitmask)
+
+if(DEADDEV_BITMASK_INSTALL)
+    include(GNUInstallDirs)
+    install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/include/deaddev/bitmask.hpp DESTINATION include/deaddev/)
+endif(DEADDEV_BITMASK_INSTALL)
+
+if(DEADDEV_BITMASK_GENERATE_DOCS)
+    message(STATUS "Todo: docs")
+endif(DEADDEV_BITMASK_GENERATE_DOCS)
+
+
+if(DEADDEV_BITMASK_BUILD_TESTS)
+    message(STATUS "Todo: tests")
+endif(DEADDEV_BITMASK_BUILD_TESTS)
+
+if(DEADDEV_BITMASK_BUILD_EXAMPLES)
+    message(STATUS "Todo: examples")
+endif(DEADDEV_BITMASK_BUILD_EXAMPLES)
+
