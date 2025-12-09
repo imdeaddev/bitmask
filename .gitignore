@@ -1,4 +1,6 @@
 *
+!cmake/
+!cmake/**
 !.github/
 !.github/**
 !example/
