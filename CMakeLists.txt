@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.20..3.30)
+cmake_minimum_required(VERSION 3.23..3.30)
 project("DeadDev Bitmask" LANGUAGES CXX VERSION 1.0.0)
 cmake_policy(SET CMP0135 NEW)
 
@@ -16,17 +16,27 @@ option(DEADDEV_BITMASK_BUILD_TESTS "build tests" ${DEADDEV_BITMASK_IS_TOP_LEVEL_
 option(DEADDEV_BITMASK_GENERATE_DOCS "generate documentation using Doxygen" ${DEADDEV_BITMASK_IS_TOP_LEVEL_PROJECT})
 option(DEADDEV_BITMASK_INSTALL "install library" ON)
 
-add_library(deaddevbitmask INTERFACE)
+add_library(bitmask INTERFACE)
 target_include_directories(
-    deaddevbitmask INTERFACE 
+    bitmask INTERFACE 
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>
 )
-add_library(deaddev::bitmask ALIAS deaddevbitmask)
+add_library(deaddev::bitmask ALIAS bitmask)
 
 if(DEADDEV_BITMASK_INSTALL)
     include(GNUInstallDirs)
-    install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/include/deaddev/bitmask.hpp DESTINATION include/deaddev/)
+    target_sources(bitmask
+        INTERFACE FILE_SET HEADERS
+        BASE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/include
+        FILES ${CMAKE_INSTALL_INCLUDEDIR}/deaddev/bitmask.hpp)
+    install(TARGETS bitmask
+        EXPORT bitmask_targets
+        FILE_SET HEADERS DESTINATION ./include)
+    install(EXPORT bitmask_targets
+        FILE deaddedvBitmaskConfig.cmake
+        NAMESPACE deaddev::
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/deaddev)
 endif(DEADDEV_BITMASK_INSTALL)
 
 if(DEADDEV_BITMASK_GENERATE_DOCS)
