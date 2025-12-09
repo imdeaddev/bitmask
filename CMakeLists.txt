@@ -30,7 +30,18 @@ if(DEADDEV_BITMASK_INSTALL)
 endif(DEADDEV_BITMASK_INSTALL)
 
 if(DEADDEV_BITMASK_GENERATE_DOCS)
-    message(STATUS "Todo: docs")
+    find_package(Doxygen)
+    if(Doxygen_FOUND)
+        set(DOXYGEN_OUT ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
+        configure_file(Doxyfile.in ${DOXYGEN_OUT} @ONLY)
+        add_custom_target(deaddev_doc_doxygen ALL
+                COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
+                WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+                COMMENT "Docs"
+                VERBATIM)
+    else(Doxygen_FOUND)
+        message(STATUS "Doxygen not found!")
+    endif(Doxygen_FOUND)
 endif(DEADDEV_BITMASK_GENERATE_DOCS)
 
 
