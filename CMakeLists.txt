@@ -32,7 +32,7 @@ if(DEADDEV_BITMASK_INSTALL)
         NAMESPACE deaddev::
         DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}")
     configure_package_config_file(
-        cmake/deadDevBitmaskConfig.cmake.in
+        cmake/DeadDevBitmaskConfig.cmake.in
         "${PROJECT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
         INSTALL_DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}"
     )
