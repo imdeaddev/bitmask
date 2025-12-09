@@ -37,7 +37,7 @@ if(DEADDEV_BITMASK_GENERATE_DOCS)
     if(Doxygen_FOUND)
         add_custom_target(deaddev_doc_doxygen ALL
                 COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
-                WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+                WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
                 COMMENT "Docs"
                 VERBATIM)
     else(Doxygen_FOUND)
