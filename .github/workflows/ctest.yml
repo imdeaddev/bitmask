@@ -88,7 +88,7 @@ jobs:
     - name: Doxygenize
       uses: langroodi/doxygenize@v1.7.1
       with:
-        doxygenconf: ${{ steps.strings.outputs.build-output-dir }}/Doxyfile
+        doxygenconf: ./build/Doxyfile
         htmloutput: ./docs
         ghpagesbranch: gh-pages
         ghpagesdir: ./
