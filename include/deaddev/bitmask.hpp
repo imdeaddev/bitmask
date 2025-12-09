@@ -266,6 +266,24 @@ public:
     return bitmask(::deaddev::details::bitmask_all_flags_v<enum_type>);
   }
 
+  DEADDEV_NODISCARD constexpr bool operator==(mask_type mask) const noexcept {
+    return mask_ == mask;
+  }
+  DEADDEV_NODISCARD constexpr bool operator!=(mask_type mask) const noexcept {
+    return mask_ != mask;
+  }
+  DEADDEV_NODISCARD constexpr bool operator<=(mask_type mask) const noexcept {
+    return mask_ <= mask;
+  }
+  DEADDEV_NODISCARD constexpr bool operator>=(mask_type mask) const noexcept {
+    return mask_ >= mask;
+  }
+  DEADDEV_NODISCARD constexpr bool operator<(mask_type mask) const noexcept {
+    return mask_ < mask;
+  }
+  DEADDEV_NODISCARD constexpr bool operator>(mask_type mask) const noexcept {
+    return mask_ > mask;
+  }
   DEADDEV_NODISCARD constexpr bool operator==(bitmask other) const noexcept {
     return mask_ == other.mask_;
   }
@@ -430,6 +448,36 @@ DEADDEV_NODISCARD constexpr bool operator<(T left, deaddev::bitmask<T> right) no
 }
 template <typename T, typename = ::std::enable_if<::deaddev::details::is_bitmask_v<T>>>
 DEADDEV_NODISCARD constexpr bool operator>(T left, deaddev::bitmask<T> right) noexcept {
+  return right < left; // reversed order
+}
+template <typename T, typename = ::std::enable_if<::deaddev::details::is_bitmask_v<T>>>
+DEADDEV_NODISCARD constexpr bool operator==(typename std::underlying_type<T>::type left,
+                                            deaddev::bitmask<T> right) noexcept {
+  return right == left; // reversed order
+}
+template <typename T, typename = ::std::enable_if<::deaddev::details::is_bitmask_v<T>>>
+DEADDEV_NODISCARD constexpr bool operator!=(typename std::underlying_type<T>::type left,
+                                            deaddev::bitmask<T> right) noexcept {
+  return right != left; // reversed order
+}
+template <typename T, typename = ::std::enable_if<::deaddev::details::is_bitmask_v<T>>>
+DEADDEV_NODISCARD constexpr bool operator>=(typename std::underlying_type<T>::type left,
+                                            deaddev::bitmask<T> right) noexcept {
+  return right <= left; // reversed order
+}
+template <typename T, typename = ::std::enable_if<::deaddev::details::is_bitmask_v<T>>>
+DEADDEV_NODISCARD constexpr bool operator<=(typename std::underlying_type<T>::type left,
+                                            deaddev::bitmask<T> right) noexcept {
+  return right >= left; // reversed order
+}
+template <typename T, typename = ::std::enable_if<::deaddev::details::is_bitmask_v<T>>>
+DEADDEV_NODISCARD constexpr bool operator<(typename std::underlying_type<T>::type left,
+                                           deaddev::bitmask<T> right) noexcept {
+  return right > left; // reversed order
+}
+template <typename T, typename = ::std::enable_if<::deaddev::details::is_bitmask_v<T>>>
+DEADDEV_NODISCARD constexpr bool operator>(typename std::underlying_type<T>::type left,
+                                           deaddev::bitmask<T> right) noexcept {
   return right < left; // reversed order
 }
 
