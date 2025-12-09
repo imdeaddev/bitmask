@@ -39,6 +39,7 @@
 #pragma once
 #include <climits>
 #include <type_traits>
+#include <cstddef>
 
 #ifndef DEADDEV_CONSTEVAL
 #if __cplusplus >= 202002L

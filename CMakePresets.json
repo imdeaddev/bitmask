@@ -6,7 +6,7 @@
             "hidden": true,
             "binaryDir": "${sourceDir}/build",
             "generator": "Ninja",
-            "installDir": "${sourceDir}/build",
+            "installDir": "${sourceDir}/install",
             "cacheVariables": {
                 "CMAKE_EXPORT_COMPILE_COMMANDS": true
             }
