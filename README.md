@@ -2,6 +2,7 @@
 
 ![C++14](https://img.shields.io/badge/C%2B%2B-14-green)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Build and run tests using CMake](https://github.com/imdeaddev/bitmask/actions/workflows/ctest.yml/badge.svg)](https://github.com/imdeaddev/bitmask/actions/workflows/ctest.yml)
 
 Bitmask is a library for using C++ scoped and unscoped enumerations as a bitmask (flags).
 I took idea from Vulkan-Hpp and designed deaddev::bitmask with the same purpose as a vk::Flags
