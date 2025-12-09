@@ -85,9 +85,6 @@ jobs:
         -DDEADDEV_BITMASK_BUILD_TESTS=OFF
         -S ${{ github.workspace }}
 
-    - name: Build
-      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --target deaddev_doc_doxygen --config ${{ matrix.build_type }}
-
     - name: Doxygenize
       uses: langroodi/doxygenize@v1.7.1
       with:
