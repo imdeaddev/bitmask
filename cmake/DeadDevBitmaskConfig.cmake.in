@@ -1,5 +1,5 @@
 @PACKAGE_INIT@
 
-include("${CMAKE_INSTALL_PREFIX}/lib/cmake/@PROJECT_NAME@/@PROJECT_NAME@Targets.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/@PROJECT_NAME@Targets.cmake")
 check_required_components("@PROJECT_NAME@")
 message(STATUS "Found @PROJECT_NAME@ v@PROJECT_VERSION@")
