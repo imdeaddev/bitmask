@@ -40,6 +40,6 @@ if(DEADDEV_BITMASK_BUILD_TESTS)
 endif(DEADDEV_BITMASK_BUILD_TESTS)
 
 if(DEADDEV_BITMASK_BUILD_EXAMPLES)
-    message(STATUS "Todo: examples")
+    add_subdirectory(example)
 endif(DEADDEV_BITMASK_BUILD_EXAMPLES)
 

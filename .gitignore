@@ -1,4 +1,6 @@
 *
+!example/
+!example/**
 !include/
 !include/**
 !.clang-format 
