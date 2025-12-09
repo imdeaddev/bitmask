@@ -1,7 +1,6 @@
 cmake_minimum_required(VERSION 3.20..3.30)
 project("DeadDev Bitmask" LANGUAGES CXX VERSION 1.0.0)
-
-set(CMAKE_CXX_STANDARD 14)
+cmake_policy(SET CMP0135 NEW)
 
 message(STATUS "${CMAKE_PROJECT_NAME} v${CMAKE_PROJECT_VERSION}")
 
@@ -31,15 +30,27 @@ if(DEADDEV_BITMASK_INSTALL)
 endif(DEADDEV_BITMASK_INSTALL)
 
 if(DEADDEV_BITMASK_GENERATE_DOCS)
-    message(STATUS "Todo: docs")
+    find_package(Doxygen)
+    if(Doxygen_FOUND)
+        set(DOXYGEN_OUT ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
+        configure_file(Doxyfile.in ${DOXYGEN_OUT} @ONLY)
+        add_custom_target(deaddev_doc_doxygen ALL
+                COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
+                WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+                COMMENT "Docs"
+                VERBATIM)
+    else(Doxygen_FOUND)
+        message(STATUS "Doxygen not found!")
+    endif(Doxygen_FOUND)
 endif(DEADDEV_BITMASK_GENERATE_DOCS)
 
 
 if(DEADDEV_BITMASK_BUILD_TESTS)
-    message(STATUS "Todo: tests")
+    enable_testing()
+    add_subdirectory(tests)
 endif(DEADDEV_BITMASK_BUILD_TESTS)
 
 if(DEADDEV_BITMASK_BUILD_EXAMPLES)
-    message(STATUS "Todo: examples")
+    add_subdirectory(example)
 endif(DEADDEV_BITMASK_BUILD_EXAMPLES)
 

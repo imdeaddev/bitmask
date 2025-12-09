@@ -67,10 +67,26 @@ namespace deaddev {
 namespace details {
 
 #ifdef __cpp_lib_is_scoped_enum
+/**
+ * @brief because older c++ standard don't support std::is_scoped_enum_v
+ *
+ * @tparam T enum type
+ */
 template <typename T> constexpr bool is_scoped_enum_v = ::std::is_scoped_enum_v<T>;
 #elif defined(__has_builtin) && __has_builtin(__is_scoped_enum)
+
+/**
+ * @brief c++14 compatible std::is_scoped_enum
+ *
+ * @tparam T enum type
+ */
 template <typename T> constexpr bool is_scoped_enum_v = __is_scoped_enum(T);
 #else
+/**
+ * @brief c++14 compatible std::is_scoped_enum
+ *
+ * @tparam T enum type
+ */
 template <typename T>
 constexpr bool is_scoped_enum_v =
     ::std::is_enum<T>::value &&
@@ -82,10 +98,11 @@ constexpr bool is_scoped_enum_v =
  * @details bitmasks are disabled by default
  */
 struct empty_bitmask_traits {
-  static constexpr bool enable = false; /// for sfinae type checks
-  static constexpr size_t all_flags =
-      0xFFFFFFFFFFFFFFFF; /// in case if `DEADDEV_ENABLE_BITMASKS_FOR_SCOPED_ENUMS` is
-                          /// defined
+  /// for sfinae type checks
+  static constexpr bool enable = false;
+  /// in case if `DEADDEV_ENABLE_BITMASKS_FOR_SCOPED_ENUMS` is
+  /// defined
+  static constexpr size_t all_flags = 0xFFFFFFFFFFFFFFFF;
 };
 
 /**
@@ -102,10 +119,26 @@ DEADDEV_CONSTEVAL auto combine_flags(::std::underlying_type_t<T> &result, T valu
 }
 
 #if __cplusplus < 201703L
+/**
+ * @brief sentinel recursion overload for all flags calculation
+ *
+ * @tparam T enum type
+ * @param val value
+ * @return T value
+ */
 template <typename T>
 DEADDEV_CONSTEVAL auto calculate_all_flags_cpp_before_17(T val) -> T {
   return static_cast<T>(val);
 }
+/**
+ * @brief C++14 implementation for calculate_all_flags
+ *
+ * @tparam T enum type
+ * @tparam Args enum values
+ * @param arg first enum value
+ * @param args rest of values
+ * @return T combined valuees
+ */
 template <typename T, typename... Args>
 DEADDEV_CONSTEVAL auto calculate_all_flags_cpp_before_17(T arg, Args... args) -> T {
   return static_cast<T>(static_cast<typename ::std::underlying_type<T>::type>(arg) |
@@ -155,7 +188,9 @@ template <typename T> DEADDEV_CONSTEVAL auto calculate_all_flags() -> T {
  * @tparam AllFlags all flags combination
  */
 template <typename T, T AllFlags> struct bitmask_traits {
+  /// for sfinae checks
   static constexpr bool enable = true;
+  /// for better negation
   static constexpr T all_flags = AllFlags;
 };
 
@@ -266,78 +301,121 @@ public:
     return bitmask(::deaddev::details::bitmask_all_flags_v<enum_type>);
   }
 
+  /// comparison operator
+  DEADDEV_NODISCARD constexpr bool operator==(mask_type mask) const noexcept {
+    return mask_ == mask;
+  }
+  /// comparison operator
+  DEADDEV_NODISCARD constexpr bool operator!=(mask_type mask) const noexcept {
+    return mask_ != mask;
+  }
+  /// comparison operator
+  DEADDEV_NODISCARD constexpr bool operator<=(mask_type mask) const noexcept {
+    return mask_ <= mask;
+  }
+  /// comparison operator
+  DEADDEV_NODISCARD constexpr bool operator>=(mask_type mask) const noexcept {
+    return mask_ >= mask;
+  }
+  /// comparison operator
+  DEADDEV_NODISCARD constexpr bool operator<(mask_type mask) const noexcept {
+    return mask_ < mask;
+  }
+  /// comparison operator
+  DEADDEV_NODISCARD constexpr bool operator>(mask_type mask) const noexcept {
+    return mask_ > mask;
+  }
+  /// comparison operator
   DEADDEV_NODISCARD constexpr bool operator==(bitmask other) const noexcept {
     return mask_ == other.mask_;
   }
+  /// comparison operator
   DEADDEV_NODISCARD constexpr bool operator!=(bitmask other) const noexcept {
     return mask_ != other.mask_;
   }
+  /// comparison operator
   DEADDEV_NODISCARD constexpr bool operator<=(bitmask other) const noexcept {
     return mask_ <= other.mask_;
   }
+  /// comparison operator
   DEADDEV_NODISCARD constexpr bool operator>=(bitmask other) const noexcept {
     return mask_ >= other.mask_;
   }
+  /// comparison operator
   DEADDEV_NODISCARD constexpr bool operator<(bitmask other) const noexcept {
     return mask_ < other.mask_;
   }
+  /// comparison operator
   DEADDEV_NODISCARD constexpr bool operator>(bitmask other) const noexcept {
     return mask_ > other.mask_;
   }
 
+  /// comparison operator
   DEADDEV_NODISCARD constexpr bitmask operator~() const noexcept {
     return bitmask(static_cast<mask_type>(mask_ ^ all_flags().mask_));
   }
 
+  /// comparison operator
   DEADDEV_NODISCARD constexpr bitmask operator^(bitmask other) const noexcept {
     return bitmask(mask_ ^ other.mask_);
   }
 
+  /// comparison operator
   DEADDEV_NODISCARD constexpr bitmask operator|(bitmask other) const noexcept {
     return bitmask(mask_ | other.mask_);
   }
 
+  /// comparison operator
   DEADDEV_NODISCARD constexpr bitmask operator&(bitmask other) const noexcept {
     return bitmask(mask_ & other.mask_);
   }
 
+  /// comparison operator
   constexpr bitmask &operator^=(bitmask other) noexcept {
     mask_ ^= other.mask_;
     return *this;
   }
 
+  /// comparison operator
   constexpr bitmask &operator|=(bitmask other) noexcept {
     mask_ |= other.mask_;
     return *this;
   }
 
+  /// comparison operator
   constexpr bitmask &operator&=(bitmask other) noexcept {
     mask_ &= other.mask_;
     return *this;
   }
 
+  /// comparison operator
   DEADDEV_NODISCARD constexpr bitmask operator^(enum_type other) const noexcept {
     return bitmask(mask_ ^ static_cast<mask_type>(other));
   }
 
+  /// comparison operator
   DEADDEV_NODISCARD constexpr bitmask operator|(enum_type other) const noexcept {
     return bitmask(mask_ | static_cast<mask_type>(other));
   }
 
+  /// comparison operator
   DEADDEV_NODISCARD constexpr bitmask operator&(enum_type other) const noexcept {
     return bitmask(mask_ & static_cast<mask_type>(other));
   }
 
+  /// comparison operator
   constexpr bitmask &operator^=(enum_type other) noexcept {
     mask_ ^= static_cast<mask_type>(other);
     return *this;
   }
 
+  /// comparison operator
   constexpr bitmask &operator|=(enum_type other) noexcept {
     mask_ |= static_cast<mask_type>(other);
     return *this;
   }
 
+  /// comparison operator
   constexpr bitmask &operator&=(enum_type other) noexcept {
     mask_ &= static_cast<mask_type>(other);
     return *this;
@@ -378,7 +456,7 @@ public:
   /**
    * @brief Combine bit mask with an enum value
    * @details Performs call to bitwise "or" assignment operator
-   * @param flag bit mask
+   * @param other bit mask
    * @return bitmask& call chaining
    */
   constexpr bitmask &set(bitmask other) noexcept { return *this |= other.mask_; }
@@ -394,7 +472,7 @@ public:
   /**
    * @brief Combine bit mask with an enum value
    * @details Performs call to bitwise "or" assignment operator
-   * @param flag bit mask
+   * @param other bit mask
    * @return bitmask& call chaining
    */
   constexpr bitmask &remove(bitmask other) noexcept { return *this ^= other.mask_; }
@@ -430,6 +508,36 @@ DEADDEV_NODISCARD constexpr bool operator<(T left, deaddev::bitmask<T> right) no
 }
 template <typename T, typename = ::std::enable_if<::deaddev::details::is_bitmask_v<T>>>
 DEADDEV_NODISCARD constexpr bool operator>(T left, deaddev::bitmask<T> right) noexcept {
+  return right < left; // reversed order
+}
+template <typename T, typename = ::std::enable_if<::deaddev::details::is_bitmask_v<T>>>
+DEADDEV_NODISCARD constexpr bool operator==(typename std::underlying_type<T>::type left,
+                                            deaddev::bitmask<T> right) noexcept {
+  return right == left; // reversed order
+}
+template <typename T, typename = ::std::enable_if<::deaddev::details::is_bitmask_v<T>>>
+DEADDEV_NODISCARD constexpr bool operator!=(typename std::underlying_type<T>::type left,
+                                            deaddev::bitmask<T> right) noexcept {
+  return right != left; // reversed order
+}
+template <typename T, typename = ::std::enable_if<::deaddev::details::is_bitmask_v<T>>>
+DEADDEV_NODISCARD constexpr bool operator>=(typename std::underlying_type<T>::type left,
+                                            deaddev::bitmask<T> right) noexcept {
+  return right <= left; // reversed order
+}
+template <typename T, typename = ::std::enable_if<::deaddev::details::is_bitmask_v<T>>>
+DEADDEV_NODISCARD constexpr bool operator<=(typename std::underlying_type<T>::type left,
+                                            deaddev::bitmask<T> right) noexcept {
+  return right >= left; // reversed order
+}
+template <typename T, typename = ::std::enable_if<::deaddev::details::is_bitmask_v<T>>>
+DEADDEV_NODISCARD constexpr bool operator<(typename std::underlying_type<T>::type left,
+                                           deaddev::bitmask<T> right) noexcept {
+  return right > left; // reversed order
+}
+template <typename T, typename = ::std::enable_if<::deaddev::details::is_bitmask_v<T>>>
+DEADDEV_NODISCARD constexpr bool operator>(typename std::underlying_type<T>::type left,
+                                           deaddev::bitmask<T> right) noexcept {
   return right < left; // reversed order
 }
 

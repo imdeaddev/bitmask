@@ -1,6 +1,10 @@
 *
+!example/
+!example/**
 !include/
 !include/**
+!tests/
+!tests/**
 !.clang-format 
 !.gitignore 
 !CMakeLists.txt 
@@ -8,3 +12,4 @@
 !LICENSE 
 !README.md
 !vcpkg.json
+!Doxyfile.in

@@ -67,3 +67,7 @@ int main() {
 ## License
 
 [MIT License](LICENSE)
+
+## Libraries used
+
+[Catch2](https://github.com/catchorg/Catch2) (testing only) BSL-1.0 License
