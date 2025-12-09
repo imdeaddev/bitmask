@@ -91,7 +91,7 @@ template <typename T> constexpr bool is_scoped_enum_v = __is_scoped_enum(T);
 template <typename T>
 constexpr bool is_scoped_enum_v =
     ::std::is_enum<T>::value &&
-    !::std::is_convertible<T, ::std::underlying_type<T>::type>::value;
+    !::std::is_convertible<T, typename ::std::underlying_type<T>::type>::value;
 #endif
 
 /**
