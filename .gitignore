@@ -3,6 +3,8 @@
 !example/**
 !include/
 !include/**
+!tests/
+!tests/**
 !.clang-format 
 !.gitignore 
 !CMakeLists.txt 

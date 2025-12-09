@@ -1,7 +1,6 @@
 cmake_minimum_required(VERSION 3.20..3.30)
 project("DeadDev Bitmask" LANGUAGES CXX VERSION 1.0.0)
-
-set(CMAKE_CXX_STANDARD 14)
+cmake_policy(SET CMP0135 NEW)
 
 message(STATUS "${CMAKE_PROJECT_NAME} v${CMAKE_PROJECT_VERSION}")
 
@@ -36,7 +35,8 @@ endif(DEADDEV_BITMASK_GENERATE_DOCS)
 
 
 if(DEADDEV_BITMASK_BUILD_TESTS)
-    message(STATUS "Todo: tests")
+    enable_testing()
+    add_subdirectory(tests)
 endif(DEADDEV_BITMASK_BUILD_TESTS)
 
 if(DEADDEV_BITMASK_BUILD_EXAMPLES)
