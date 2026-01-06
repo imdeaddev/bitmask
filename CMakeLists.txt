@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.23..3.30)
-project("deaddev-bitmask" LANGUAGES CXX VERSION 1.0.0)
+project("deaddev-bitmask" LANGUAGES CXX VERSION 1.0.1)
 cmake_policy(SET CMP0135 NEW)
 
 message(STATUS "${CMAKE_PROJECT_NAME} v${CMAKE_PROJECT_VERSION}")
