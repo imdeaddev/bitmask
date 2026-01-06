@@ -178,7 +178,7 @@ DEADDEV_CONSTEVAL auto calculate_all_flags(Args... args) -> T {
  * @return T value with all bits are set to 1
  */
 template <typename T> DEADDEV_CONSTEVAL auto calculate_all_flags() -> T {
-  return static_cast<T>((1 << (sizeof(T) * CHAR_BIT)) - 1);
+  return static_cast<T>((1ull << ((sizeof(T) * CHAR_BIT) - 1)) - 1); // patched
 }
 
 /**
@@ -560,6 +560,21 @@ DEADDEV_NODISCARD constexpr deaddev::bitmask<T> operator|(T left, T right) noexc
 template <typename T, typename = ::std::enable_if<::deaddev::details::is_bitmask_v<T>>>
 DEADDEV_NODISCARD constexpr deaddev::bitmask<T> operator&(T left, T right) noexcept {
   return deaddev::bitmask<T>(left) & right;
+}
+
+template <typename T, typename = ::std::enable_if<::deaddev::details::is_bitmask_v<T>>>
+DEADDEV_NODISCARD constexpr deaddev::bitmask<T> operator^(T left, ::deaddev::bitmask<T> right) noexcept {
+  return right ^ left;
+}
+
+template <typename T, typename = ::std::enable_if<::deaddev::details::is_bitmask_v<T>>>
+DEADDEV_NODISCARD constexpr deaddev::bitmask<T> operator|(T left, ::deaddev::bitmask<T> right) noexcept {
+  return right | left;
+}
+
+template <typename T, typename = ::std::enable_if<::deaddev::details::is_bitmask_v<T>>>
+DEADDEV_NODISCARD constexpr deaddev::bitmask<T> operator&(T left, ::deaddev::bitmask<T> right) noexcept {
+  return right & left;
 }
 
 /**
