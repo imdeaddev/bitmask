@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.23..3.30)
-project("DeadDevBitmask" LANGUAGES CXX VERSION 1.0.0)
+project("deaddev-bitmask" LANGUAGES CXX VERSION 1.0.0)
 cmake_policy(SET CMP0135 NEW)
 
 message(STATUS "${CMAKE_PROJECT_NAME} v${CMAKE_PROJECT_VERSION}")
@@ -27,18 +27,14 @@ add_library(deaddev::bitmask ALIAS bitmask)
 if(DEADDEV_BITMASK_INSTALL)
     include(GNUInstallDirs)
     include(CMakePackageConfigHelpers)
-    install(TARGETS bitmask EXPORT ${PROJECT_NAME}Targets)
-    install(EXPORT ${PROJECT_NAME}Targets
+    install(TARGETS bitmask EXPORT ${PROJECT_NAME}-targets)
+    install(EXPORT ${PROJECT_NAME}-targets
         NAMESPACE deaddev::
         DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}")
     configure_package_config_file(
-        cmake/DeadDevBitmaskConfig.cmake.in
-        "${PROJECT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
-        INSTALL_DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}"
-    )
-    install(FILES "${PROJECT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
-        DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}"
-    )
+        cmake/deaddev-bitmask-config.cmake.in
+        "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}"
+        INSTALL_DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}")
     install(DIRECTORY include/deaddev
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
         FILES_MATCHING
@@ -70,3 +66,5 @@ endif(DEADDEV_BITMASK_BUILD_TESTS)
 if(DEADDEV_BITMASK_BUILD_EXAMPLES)
     add_subdirectory(example)
 endif(DEADDEV_BITMASK_BUILD_EXAMPLES)
+
+find_package(deaddev-bitmask)
